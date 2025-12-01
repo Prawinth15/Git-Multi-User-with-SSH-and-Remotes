@@ -144,6 +144,13 @@ You can then use `git@github-work:owner/repo.git` as the remote to force that ke
    - **Usage type**: Authentication & Signing
    - **Key**: Paste the public SSH key
 
+### Codeberg: Add SSH keys
+
+1. Go to **Settings → SSH / GPG Keys** and add a new SSH key with the following properties:
+
+   - **Key name**: Name the connection
+   - **Content**: Paste the public SSH key
+
 ### Verify connection
 
 Verify that your SSH key was added correctly:
@@ -182,3 +189,4 @@ This copies the named subsection (`user.work.*`) into the local repo's `user.nam
 - GitHub Docs - [Generating a new SSH key and adding it to the ssh-agent](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 - GitHub Docs - [Adding a new SSH key to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
 - GitLab Docs - [Use SSH keys to communicate with GitLab](https://docs.gitlab.com/user/ssh/)
+- Codeberg Docs - [Adding an SSH key to your account](https://docs.codeberg.org/security/ssh-key/)
