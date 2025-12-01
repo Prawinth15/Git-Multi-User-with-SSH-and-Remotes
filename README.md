@@ -24,7 +24,7 @@ You can store multiple identities in your global `~/.gitconfig` under different 
 
 Example: add one identity block for each identity in your global config (or use the `git config` commands shown below):
 
-```ini
+```gitconfig
 [user "work"]
 	name = Work Name
 	email = work@example.com
