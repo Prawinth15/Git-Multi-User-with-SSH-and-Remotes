@@ -136,7 +136,7 @@ You can then use `git@github-work:owner/repo.git` as the remote to force that ke
    - **Key Type**: Signing Key
    - **Key**: Paste the public SSH key
 
-### GitHub: Add SSH keys
+### GitLab: Add SSH keys
 
 1. Go to **Edit profile → SSH Keys** and add a new SSH key with the following properties:
 
