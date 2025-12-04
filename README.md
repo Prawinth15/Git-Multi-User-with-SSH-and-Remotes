@@ -2,61 +2,20 @@
 
 This guide walks you through setting up multiple Git identities with SSH signing and remotes. It covers generating SSH keys, configuring per-identity Git settings (including SSH commit signing), and connecting those identities to hosting services such as GitHub.
 
-## Prerequisites
+## Setup
 
-### Generating an SSH key pair
-
-Run the following (recommended) command to create an ed25519 key for each identity. Use `-f` to set a custom filename so keys don't overwrite each other:
+If you want Git to refuse to make commits unless you have explicitly set your identity in the repository (safer when managing multiple identities), enable:
 
 ```bash
-ssh-keygen -t ed25519 -C "email@example.com" -f ~/.ssh/id_ed25519_identity
+git config --global user.useConfigOnly true
 ```
 
-Follow the prompts and choose a passphrase you can remember (recommended). If you prefer no passphrase, press Enter when prompted.
-
-Notes:
-- Keep the private key (e.g. `~/.ssh/id_ed25519_identity`) secret. The public key is the one you upload to services.
-- When using SSH commit signing, you will register the *public* key as a signing key on the hosting service.
-
-## Configuring Git identities and SSH commit signing
-
-You can store multiple identities in your global `~/.gitconfig` under different `user` subsections and switch between them per-repository.
-
-Example: add one identity block for each identity in your global config (or use the `git config` commands shown below):
-
-```gitconfig
-[user "work"]
-	name = Work Name
-	email = work@example.com
-	signingkey = ~/.ssh/id_ed25519_work.pub
-
-[user "personal"]
-	name = Personal Name
-	email = personal@example.com
-	signingkey = ~/.ssh/id_ed25519_personal.pub
-```
-
-You can set those values from the command line as well. Note: these `user.<key>.*` names are sections in the Git config and are not the active commit identity until you copy them into `user.name`/`user.email` for a repo.
-
-```bash
-# Example (sets values in global config under a named subsection):
-git config --global user.work.name "Work Name"
-git config --global user.work.email "work@example.com"
-git config --global user.work.signingkey "~/.ssh/id_ed25519_work.pub"
-```
+### SSH Signing
 
 To tell Git to use SSH as the commit-signing backend:
 
 ```bash
 git config --global gpg.format ssh
-```
-
-Important: `user.signingkey` should point to your public key file (for example `~/.ssh/id_ed25519_work.pub`) — the public key is what you upload to the hosting service as a Signing Key. The private key is used locally (via your SSH agent) to create the signature.
-
-If you want Git to refuse to make commits unless `user.name` and `user.email` are explicitly set in the repository (safer when managing multiple identities), enable:
-
-```bash
-git config --global user.useConfigOnly true
 ```
 
 To enable automatic commit signing by default:
@@ -67,7 +26,7 @@ git config --global commit.gpgsign true
 
 ### Aliases to switch identities
 
-On Unix-like shells (Git Bash, WSL, macOS Terminal) you can create a Git alias that copies values from a named subsection into the active `user.*` for the current repo.
+On Unix-like shells (Git Bash, WSL, macOS Terminal) you may create a Git alias that sets the identity for the current repository:
 
 ```bash
 git config --global alias.identity '!sh -c "git config user.name \"$(git config user.$1.name)\" && git config user.email \"$(git config user.$1.email)\" && git config user.signingkey \"$(git config user.$1.signingkey)\"" -'
@@ -76,7 +35,7 @@ git config --global alias.identity '!sh -c "git config user.name \"$(git config 
 Usage (in a repo):
 
 ```bash
-git identity work
+git identity <identifier>
 ```
 
 PowerShell alternative (Windows users):
@@ -89,40 +48,67 @@ function Set-GitIdentity {
   git config user.signingkey (git config --get "user.$Identity.signingkey")
 }
 ```
+
 Usage (in a repo):
 
 ```powershell
-Set-GitIdentity work
+Set-GitIdentity <identifier>
 ```
 
 Add the PowerShell function to your PowerShell profile (`$PROFILE`) if you want it available in every session.
 
-## Connecting identities to hosting services
+## Creating identities
+
+An identity has
+
+- an identifier (e.g. `work`, `personal`)
+- a name (e.g. `Mike`)
+- an email (e.g. `mike@business.com`, `mike@personal.dev`)
+- a private (e.g. `~/.ssh/id_ed25519`) and a public (e.g. `~/.ssh/id_ed25519.pub`) key
+
+### Generating an SSH key pair
+
+Run the following command to create an ed25519 (recommended) key for each identity. Use `-f` to set a custom filename so keys don't overwrite each other:
+
+```bash
+ssh-keygen -t ed25519 -C <email> -f <path/to/key>
+```
+
+Follow the prompts and choose a passphrase you can remember (recommended). If you prefer no passphrase, press Enter when prompted.
+
+> [!important]
+> Keep the private key (`path/to/key`) secret. The public key (`path/to/key.pub`) may be shared with anyone.
+
+### Configure an identity
+
+Create an identity with name, email and signing key:
+
+```bash
+git config --global user.<identifier>.name <name>
+git config --global user.<identifier>.email <email>
+git config --global user.<identifier>.signingkey <path/to/key.pub>
+```
+
+## Connecting to hosting services
+
+To connect with hosting services, an identity gets a `connection` per remote.
 
 ### SSH host entries
 
-In `~/.ssh/config` add an entry per identity/host to select which private key to use when connecting. Use the private key file (not the .pub) in `IdentityFile`:
+In `~/.ssh/config` add an entry per connection (identity/host) to select which private key to use when connecting. Use the private key file in `IdentityFile`:
 
 ```sshconfig
-Host github-work
-	HostName github.com
+Host <connection>
+	HostName <host ip or domain>
 	PreferredAuthentications publickey
-	IdentityFile ~/.ssh/id_ed25519_work
-
-Host github-personal
-	HostName github.com
-	PreferredAuthentications publickey
-	IdentityFile ~/.ssh/id_ed25519_personal
-
-Host gitlab-personal
-	HostName gitlab.com
-	PreferredAuthentications publickey
-	IdentityFile ~/.ssh/id_ed25519_personal
+	IdentityFile <path/to/key>
 ```
 
-You can then use `git@github-work:owner/repo.git` as the remote to force that key.
+To now reference a repository (e.g. for cloning), use `git@<connection>:owner/repo.git` as the remote.
 
-### GitHub: Add SSH keys
+### Popular hosting services
+
+#### GitHub: Add SSH keys
 
 1. Go to **Settings → Access → SSH and GPG keys** and add a new SSH key with the following properties:
 
@@ -136,7 +122,7 @@ You can then use `git@github-work:owner/repo.git` as the remote to force that ke
    - **Key Type**: Signing Key
    - **Key**: Paste the public SSH key
 
-### GitLab: Add SSH keys
+#### GitLab: Add SSH keys
 
 1. Go to **Edit profile → SSH Keys** and add a new SSH key with the following properties:
 
@@ -144,7 +130,7 @@ You can then use `git@github-work:owner/repo.git` as the remote to force that ke
    - **Usage type**: Authentication & Signing
    - **Key**: Paste the public SSH key
 
-### Codeberg: Add SSH keys
+#### Codeberg: Add SSH keys
 
 1. Go to **Settings → SSH / GPG Keys** and add a new SSH key with the following properties:
 
@@ -156,7 +142,7 @@ You can then use `git@github-work:owner/repo.git` as the remote to force that ke
 Verify that your SSH key was added correctly:
 
 ```bash
-ssh -T git@gitlab-personal
+ssh -T git@<connection>
 ```
 
 ## Tips
@@ -164,7 +150,7 @@ ssh -T git@gitlab-personal
 To avoid re-entering a passphrase every time, add your private key to an agent for the session:
 
 ```bash
-ssh-add ~/.ssh/id_ed25519_work
+ssh-add <path/to/key>
 ```
 
 ## References
